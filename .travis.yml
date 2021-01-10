@@ -3,19 +3,15 @@ node_js:
   - "lts/*"
 
 stages:
-  - name: build
   - name: test
   - name: release
     if: tag IS present
 
 jobs:
   include:
-    - stage: build
-      script:
-        # test that the extension builds correctly
-        - npm run compile
     - stage: test
       script:
+        - set -e
         - npm run test
     - stage: release
       before_install:
