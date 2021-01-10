@@ -1,34 +1,17 @@
 language: node_js
-node_js:
-  - "lts/*"
-
 os:
   - osx
   - linux
+node_js: 8
 
-stages:
-  - Test
-  - name: release
-    if: tag IS present
-
-jobs:
-  include:
-    - stage: Test
-      script:
-        - set -e
-        - |
-          if [ $TRAVIS_OS_NAME == "linux" ]; then
-            export DISPLAY=':99.0'
-            /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          fi
-        - npm i
-        - npm run test
-    - stage: release
-      before_install:
-        - npm i -g vsce
-      script:
-        # fail fast
-        - set -e
-        # publish the extension to the Marketplace
-        - vsce publish -p $VS_MARKETPLACE_TOKEN
-
+install:
+  - |
+    if [ $TRAVIS_OS_NAME == "linux" ]; then
+      export DISPLAY=':99.0'
+      /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+    fi
+script:
+  - |
+    set -e
+    npm i
+    npm test
