@@ -4,6 +4,7 @@ node_js:
 
 stages:
   - name: build
+  - name: test
   - name: release
     if: tag IS present
 
@@ -13,6 +14,9 @@ jobs:
       script:
         # test that the extension builds correctly
         - npm run compile
+    - stage: test
+      script:
+        - npm run test
     - stage: release
       before_install:
         - npm i -g vsce
