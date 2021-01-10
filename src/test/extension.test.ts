@@ -15,19 +15,20 @@ import { getDocUri, activate } from './helper';
 // Defines a Mocha test suite to group tests of similar kind together
 suite("Extension Tests", function () {
 
-    // Defines a Mocha unit test
-    test("Should autocomplete functions", async function() {
+	// Defines a Mocha unit test
+	test("Should autocomplete functions", async function () {
 
 		this.timeout(10_000);
 
-        const docUri = getDocUri('completion.dhall');
+		const docUri = getDocUri('completion.dhall');
 
-        await testCompletion(docUri, new vscode.Position(1,5), {
-            items: [
-				{ label: 'aFun', kind: vscode.CompletionItemKind.Property }			]
-        });
+		await testCompletion(docUri, new vscode.Position(1, 5), {
+			items: [
+				{ label: 'aFun', kind: vscode.CompletionItemKind.Property }
+			]
+		});
 
-    });
+	});
 });
 
 //From https://github.com/microsoft/vscode-extension-samples/blob/master/lsp-sample/client/src/test/completion.test.ts
