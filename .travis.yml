@@ -7,13 +7,13 @@ os:
   - linux
 
 stages:
-  - name: test
+  - Test
   - name: release
     if: tag IS present
 
 jobs:
   include:
-    - stage: test
+    - stage: Test
       script:
         - set -e
         - |
