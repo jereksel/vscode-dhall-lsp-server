@@ -34,10 +34,11 @@ node_js:
 
 jobs:
   include:
-    - stage: test
-      script:
+    # - stage: test
+    - script:
         - npm run test
-    # - stage: release
+        - npm run test
+        # - stage: release
     #   if: tag IS present AND os IS linux
     #   before_install:
     #     - npm i -g vsce
