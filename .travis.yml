@@ -1,26 +1,52 @@
+# language: node_js
+# os:
+#   - linux
+#   - osx
+# node_js: 
+#   - lts/*
+# dist: focal
+
+# install:
+#   - |
+#     set -e
+#     if [ $TRAVIS_OS_NAME == "linux" ]; then
+#       export DISPLAY=':99.0'
+#       /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+#       wget https://github.com/dhall-lang/dhall-haskell/releases/download/1.37.1/dhall-lsp-server-1.0.12-x86_64-linux.tar.bz2 -O /tmp/dhall-lsp-server.tar.bz2
+#     else
+#       wget https://github.com/dhall-lang/dhall-haskell/releases/download/1.37.1/dhall-lsp-server-1.0.12-x86_64-macos.tar.bz2 -O /tmp/dhall-lsp-server.tar.bz2
+#     fi
+#     mkdir /tmp/dhall
+#     tar --extract --bzip2 --file /tmp/dhall-lsp-server.tar.bz2 -C /tmp/dhall
+#     export PATH=$PATH:/tmp/dhall/bin
+# script:
+#   - |
+#     set -e
+#     npm i
+#     npm test
+
 language: node_js
 os:
   - linux
   - osx
-node_js: 
-  - lts/*
-dist: focal
+node_js:
+  - "lts/*"
 
-install:
-  - |
-    set -e
-    if [ $TRAVIS_OS_NAME == "linux" ]; then
-      export DISPLAY=':99.0'
-      /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-      wget https://github.com/dhall-lang/dhall-haskell/releases/download/1.37.1/dhall-lsp-server-1.0.12-x86_64-linux.tar.bz2 -O /tmp/dhall-lsp-server.tar.bz2
-    else
-      wget https://github.com/dhall-lang/dhall-haskell/releases/download/1.37.1/dhall-lsp-server-1.0.12-x86_64-macos.tar.bz2 -O /tmp/dhall-lsp-server.tar.bz2
-    fi
-    mkdir /tmp/dhall
-    tar --extract --bzip2 --file /tmp/dhall-lsp-server.tar.bz2 -C /tmp/dhall
-    export PATH=$PATH:/tmp/dhall/bin
-script:
-  - |
-    set -e
-    npm i
-    npm test
+stages:
+  - name: build
+  - name: release
+    if: tag IS present AND os IS linux
+
+jobs:
+  include:
+    - stage: build
+      script:
+        - npm run test
+    - stage: release
+      before_install:
+        - npm i -g vsce
+      script:
+        # fail fast
+        - set -e
+        # publish the extension to the Marketplace
+        - vsce publish -p $VS_MARKETPLACE_TOKEN
