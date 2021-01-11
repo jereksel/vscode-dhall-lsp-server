@@ -3,7 +3,7 @@ jobs:
     - stage: deploy
       script: ./deploy
 
-# language: node_js
+language: node_js
 os:
   - linux
   - osx
