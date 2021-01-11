@@ -34,7 +34,7 @@ node_js:
 
 jobs:
   include:
-    - stage: build
+    - stage: test
       script:
         - npm run test
     # - stage: release
