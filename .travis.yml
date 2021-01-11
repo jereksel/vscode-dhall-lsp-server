@@ -32,17 +32,13 @@ os:
 node_js:
   - "lts/*"
 
-stages:
-  - name: build
-  - name: release
-    if: tag IS present AND os IS linux
-
 jobs:
   include:
     - stage: build
       script:
         - npm run test
     - stage: release
+      if: tag IS present AND os IS linux
       before_install:
         - npm i -g vsce
       script:
