@@ -32,6 +32,7 @@ deploy:
       npm i -g vsce
       vsce publish -p $VS_MARKETPLACE_TOKEN
     on:
+      all_branches: true
       tags: true
       condition: "$TRAVIS_OS_NAME == linux"
 
